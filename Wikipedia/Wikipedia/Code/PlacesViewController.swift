@@ -1952,6 +1952,11 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         currentSearch = PlaceSearch(filter: .top, type: .location, origin: .user, sortStyle: .links, string: nil, region: region, localizedDescription: title, searchResult: searchResult, siteURL: articleURL.wmf_site)
     }
     
+    @objc public func showPlacesAtCoordinates(latitude: Double, longitude: Double) {
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        setMapToLocationAndDoARegionSearch(location: location)
+    }
+    
     fileprivate func searchForFirstSearchSuggestion() {
         if !searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection].isEmpty {
             currentSearch = searchSuggestionController.searches[PlaceSearchSuggestionController.completionSection][0]
@@ -2128,7 +2133,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
         view.heading = heading.trueHeading
     }
     
-    func zoomAndPanMapView(toLocation location: CLLocation) {
+    func setMapToLocationAndDoARegionSearch(location: CLLocation) {
         let region = [location.coordinate].wmf_boundingRegion(with: 10000)
         mapRegion = region
         if let searchRegion = currentSearchRegion, isDistanceSignificant(betweenRegion: searchRegion, andRegion: region) {
@@ -2145,7 +2150,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
             promptForLocationAccess()
             return
         }
-        zoomAndPanMapView(toLocation: userLocation)
+        setMapToLocationAndDoARegionSearch(location: userLocation)
     }
     
     // MARK: - NSFetchedResultsControllerDelegate
@@ -2382,7 +2387,7 @@ extension PlacesViewController: LocationManagerDelegate {
             return
         }
         panMapToNextLocationUpdate = false
-        zoomAndPanMapView(toLocation: location)
+        setMapToLocationAndDoARegionSearch(location: location)
     }
 
     func locationManager(_ locationManager: LocationManagerProtocol, didUpdate heading: CLHeading) {
