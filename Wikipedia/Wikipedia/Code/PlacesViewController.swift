@@ -1952,6 +1952,8 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     }
     
     @objc public func showPlacesAtCoordinates(latitude: Double, longitude: Double) {
+        guard loadViewIfPossible() else { return }
+        
         let location = CLLocation(latitude: latitude, longitude: longitude)
         setMapToLocationAndDoARegionSearch(location: location)
     }
