@@ -1928,7 +1928,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     }
     
     @objc public func showNearbyArticles() {
-        guard view != nil else { // force view instantiation
+        guard loadViewIfPossible() else {
             return
         }
         
@@ -1941,8 +1941,7 @@ class PlacesViewController: ViewController, UISearchBarDelegate, ArticlePopoverV
     }
     
     @objc public func showArticleURL(_ articleURL: URL) {
-        guard let article = dataStore.fetchArticle(with: articleURL), let title = articleURL.wmf_title,
-            view != nil else { // force view instantiation
+        guard let article = dataStore.fetchArticle(with: articleURL), let title = articleURL.wmf_title, loadViewIfPossible() else {
             return
         }
         let region = self.region(thatFits: [article])
@@ -2431,5 +2430,11 @@ extension PlacesViewController {
                 return false
             }
         }
+    }
+}
+
+fileprivate extension UIViewController {
+    func loadViewIfPossible() -> Bool {
+        return view != nil
     }
 }
