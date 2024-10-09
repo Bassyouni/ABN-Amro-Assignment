@@ -10,6 +10,7 @@ import Foundation
 public protocol PlacesPresentationLogic {
     func didStartLoadingPlaces()
     func didFinishLoadingPlaces(with places: [Place])
+    func didFinishLoadingPlaces(with error: Error)
 }
 
 public class PlacesPresenter {

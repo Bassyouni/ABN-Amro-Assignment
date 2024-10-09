@@ -12,12 +12,16 @@ protocol PlacesBusinessLogic {
 }
 
 public protocol PlacesLoader {
-    func loadPlaces() async -> [Place]
+    func loadPlaces() async throws -> [Place]
 }
 
 public class PlacesInteractor {
     private let loader: PlacesLoader
     private let presenter: PlacesPresentationLogic
+    
+    public enum Error: Swift.Error {
+        case failedToLoadPlaces
+    }
     
     public init(loader: PlacesLoader, presenter: PlacesPresentationLogic) {
         self.loader = loader
@@ -26,7 +30,13 @@ public class PlacesInteractor {
     
     public func loadPlaces() async {
         presenter.didStartLoadingPlaces()
-        let places = await loader.loadPlaces()
-        presenter.didFinishLoadingPlaces(with: places)
+        
+        do {
+            let places = try await loader.loadPlaces()
+            presenter.didFinishLoadingPlaces(with: places)
+        }
+        catch {
+            presenter.didFinishLoadingPlaces(with: PlacesInteractor.Error.failedToLoadPlaces)
+        }
     }
 }
