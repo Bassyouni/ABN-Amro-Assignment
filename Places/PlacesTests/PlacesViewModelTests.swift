@@ -13,6 +13,16 @@ final class PlacesViewModelTests: XCTestCase {
     func test_init_isLoadingIsFalseByDefault() {
         XCTAssertEqual(makeSUT().isLoading, false)
     }
+    
+    func test_displayLoading_setsIsLoading() {
+        let sut = makeSUT()
+        
+        sut.displayLoading(isLoading: true)
+        XCTAssertEqual(sut.isLoading, true)
+        
+        sut.displayLoading(isLoading: false)
+        XCTAssertEqual(sut.isLoading, false)
+    }
 }
 
 extension PlacesViewModelTests {

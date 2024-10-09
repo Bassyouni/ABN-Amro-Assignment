@@ -20,4 +20,8 @@ public class PlacesViewModel: ObservableObject {
     @Published public var isLoading = false
     
     public init() {}
+    
+    public func displayLoading(isLoading: Bool) {
+        self.isLoading = isLoading
+    }
 }
