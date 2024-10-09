@@ -13,6 +13,20 @@ public protocol PlacesPresentationLogic {
     func didFinishLoadingPlaces(with error: Error)
 }
 
+public struct PlaceUIData: Identifiable, Equatable {
+    public let id = UUID()
+    let name: String
+    let location: String
+}
+
 public class PlacesPresenter {
+    let view: PlacesDisplayLogic
     
+    public init(view: PlacesDisplayLogic) {
+        self.view = view
+    }
+    
+    public func didStartLoadingPlaces() {
+        
+    }
 }
