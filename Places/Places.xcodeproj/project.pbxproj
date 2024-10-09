@@ -17,6 +17,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8702EB0C2CB6A60900D96893 /* Places.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Places.xctestplan; sourceTree = "<group>"; };
 		879816F62CB071E000A8FB11 /* Places.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Places.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		879817062CB071E200A8FB11 /* PlacesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlacesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -55,6 +56,7 @@
 		879816ED2CB071E000A8FB11 = {
 			isa = PBXGroup;
 			children = (
+				8702EB0C2CB6A60900D96893 /* Places.xctestplan */,
 				879816F82CB071E000A8FB11 /* Places */,
 				879817092CB071E200A8FB11 /* PlacesTests */,
 				879816F72CB071E000A8FB11 /* Products */,
