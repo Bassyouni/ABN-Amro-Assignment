@@ -48,6 +48,14 @@ final class PlacesPresenterTests: XCTestCase {
         
         XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.name, "New York")
     }
+    
+    func test_didFinishLoadingPlaces_changesLocationFromDoubleToFormattedString() {
+        let sut = makeSUT()
+        
+        sut.didFinishLoadingPlaces(with: [Place(latitude: 1.2, longitude: 1)])
+        
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.location, "(1.2, 1.0)")
+    }
 }
 
 extension PlacesPresenterTests {
