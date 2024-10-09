@@ -22,3 +22,23 @@ final class MainQueueDispatchDecorator<T> {
         completion()
     }
 }
+
+extension MainQueueDispatchDecorator: PlacesDisplayLogic where T == PlacesDisplayLogic {
+    func displayLoading(isLoading: Bool) {
+        dispatch { [weak self] in
+            self?.decoratee.displayLoading(isLoading: isLoading)
+        }
+    }
+    
+    func displayPlaces(_ places: [PlaceUIData]) {
+        dispatch { [weak self] in
+            self?.decoratee.displayPlaces(places)
+        }
+    }
+    
+    func displayError(message: String?) {
+        dispatch { [weak self] in
+            self?.decoratee.displayError(message: message)
+        }
+    }
+}
