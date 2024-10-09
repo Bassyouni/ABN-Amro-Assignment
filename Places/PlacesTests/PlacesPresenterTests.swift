@@ -43,18 +43,28 @@ final class PlacesPresenterTests: XCTestCase {
     
     func test_didFinishLoadingPlaces_whenNameIsNotCapitalziedSetsNameToBeCapitalized() {
         let sut = makeSUT()
+        let places = [
+            Place(name: "new york", latitude: 1, longitude: 1),
+            Place(name: "berlin", latitude: 1, longitude: 1)
+        ]
         
-        sut.didFinishLoadingPlaces(with: [Place(name: "new york", latitude: 1, longitude: 1)])
+        sut.didFinishLoadingPlaces(with: places)
         
         XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.name, "New York")
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().last?.name, "Berlin")
     }
     
     func test_didFinishLoadingPlaces_changesLocationFromDoubleToFormattedString() {
         let sut = makeSUT()
+        let places = [
+            Place(name: "", latitude: 1.1, longitude: 1),
+            Place(name: "", latitude: 2, longitude: 2.2)
+        ]
         
-        sut.didFinishLoadingPlaces(with: [Place(latitude: 1.2, longitude: 1)])
+        sut.didFinishLoadingPlaces(with: places)
         
-        XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.location, "(1.2, 1.0)")
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.location, "(1.1, 1.0)")
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().last?.location, "(2.0, 2.2)")
     }
 }
 
