@@ -18,6 +18,10 @@ final class PlacesViewModelTests: XCTestCase {
         XCTAssertEqual(makeSUT().places, [])
     }
     
+    func test_init_errorMessageIsNilByDefault() {
+        XCTAssertEqual(makeSUT().errorMessage, nil)
+    }
+    
     func test_displayLoading_setsIsLoading() {
         let sut = makeSUT()
         
@@ -27,7 +31,6 @@ final class PlacesViewModelTests: XCTestCase {
         sut.displayLoading(isLoading: false)
         XCTAssertEqual(sut.isLoading, false)
     }
-    
     
     func test_displayPlaces_setsDataToPlaces() {
         let sut = makeSUT()
@@ -41,6 +44,17 @@ final class PlacesViewModelTests: XCTestCase {
         
         sut.displayPlaces([])
         XCTAssertEqual(sut.places, [])
+    }
+    
+    func test_displayError_setsErrorMessage() {
+        let sut = makeSUT()
+        let message = "any error"
+        
+        sut.displayError(message: message)
+        XCTAssertEqual(sut.errorMessage, message)
+        
+        sut.displayError(message: nil)
+        XCTAssertEqual(sut.errorMessage, nil)
     }
 }
 
