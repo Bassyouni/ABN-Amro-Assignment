@@ -7,8 +7,13 @@
 
 import Foundation
 
-public struct PlaceUIData: Identifiable {
+public struct PlaceUIData: Identifiable, Equatable {
     public let id = UUID()
     public let name: String
     public let location: String
+    
+    public init(name: String, location: String) {
+        self.name = name
+        self.location = location
+    }
 }

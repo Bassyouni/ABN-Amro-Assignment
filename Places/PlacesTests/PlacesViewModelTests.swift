@@ -14,6 +14,10 @@ final class PlacesViewModelTests: XCTestCase {
         XCTAssertEqual(makeSUT().isLoading, false)
     }
     
+    func test_init_placesIsEmptyByDefault() {
+        XCTAssertEqual(makeSUT().places, [])
+    }
+    
     func test_displayLoading_setsIsLoading() {
         let sut = makeSUT()
         
@@ -22,6 +26,21 @@ final class PlacesViewModelTests: XCTestCase {
         
         sut.displayLoading(isLoading: false)
         XCTAssertEqual(sut.isLoading, false)
+    }
+    
+    
+    func test_displayPlaces_setsDataToPlaces() {
+        let sut = makeSUT()
+        let places = [
+            PlaceUIData(name: "any name", location: "any location"),
+            PlaceUIData(name: "any", location: "any"),
+        ]
+        
+        sut.displayPlaces(places)
+        XCTAssertEqual(sut.places, places)
+        
+        sut.displayPlaces([])
+        XCTAssertEqual(sut.places, [])
     }
 }
 

@@ -17,11 +17,16 @@ public protocol PlacesDisplayLogic {
 @MainActor
 public class PlacesViewModel: ObservableObject {
     
-    @Published public var isLoading = false
+    @Published public private(set) var isLoading = false
+    @Published public private(set) var places = [PlaceUIData]()
     
     public init() {}
     
     public func displayLoading(isLoading: Bool) {
         self.isLoading = isLoading
+    }
+    
+    public func displayPlaces(_ places: [PlaceUIData]) {
+        self.places = places
     }
 }
