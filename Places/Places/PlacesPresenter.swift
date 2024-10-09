@@ -32,4 +32,9 @@ public class PlacesPresenter {
         )})
         view.displayLoading(isLoading: false)
     }
+    
+    public func didFinishLoadingPlaces(with error: Error) {
+        view.displayError(message: "Unable to load places")
+        view.displayLoading(isLoading: false)
+    }
 }

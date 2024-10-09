@@ -66,6 +66,15 @@ final class PlacesPresenterTests: XCTestCase {
         XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.location, "(1.1, 1.0)")
         XCTAssertEqual(env.viewModelSpy.receivedPlaces().last?.location, "(2.0, 2.2)")
     }
+    
+    func test_didFinishLoadingPlacesWithError_requestsViewToShowErrorMessageThenHideLoadiing() {
+        let sut = makeSUT()
+        let errorMessage = "Unable to load places"
+        
+        sut.didFinishLoadingPlaces(with: NSError())
+        
+        XCTAssertEqual(env.viewModelSpy.messages, [.showError(errorMessage), .hideLoading])
+    }
 }
 
 extension PlacesPresenterTests {
