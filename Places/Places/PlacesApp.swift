@@ -14,7 +14,7 @@ struct PlacesApp: App {
             let viewModel = PlacesViewModel()
             let presenter = PlacesPresenter(view: MainQueueDispatchDecorator(decoratee: viewModel))
             let interactor = PlacesInteractor(loader: BackgroundQueuePlacesLoader() , presenter: presenter)
-            PlacesView(viewModel: viewModel, interactor: interactor)
+            PlacesView(interactor: interactor, viewModel: viewModel)
         }
     }
 }

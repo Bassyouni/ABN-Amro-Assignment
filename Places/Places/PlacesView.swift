@@ -9,33 +9,72 @@ import SwiftUI
 
 struct PlacesView: View {
     
-    @ObservedObject var viewModel: PlacesViewModel
     let interactor: PlacesBusinessLogic
+    @ObservedObject var viewModel: PlacesViewModel
+    
+    @State private var latitude: String = ""
+    @State private var longitude: String = ""
+    @State private var selectedSegment: Segments = .list
+    
+    private let customGreyColor = Color(red: 0, green: 58/255, blue: 83/255)
+    private let customGreenColor = Color(red: 4/255, green: 106/255, blue: 56/255)
+    
+    enum Segments {
+        case list
+        case custom
+    }
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
-                    if viewModel.isLoading {
-                        ProgressView()
-                    }
-                    
-                    if let errorMessage = viewModel.errorMessage {
-                        Text(errorMessage)
-                            .multilineTextAlignment(.leading)
-                            .foregroundColor(.red)
-                    }
-                    
-                    ForEach(viewModel.places) { place in
-                        placeCell(place)
-                    }
+            VStack {
+                segmentsView
+                
+                switch selectedSegment {
+                case .list:
+                    listView
+                case .custom:
+                    customCoordinatesView
                 }
-                .padding(20)
+                
+                Spacer()
             }
             .navigationTitle("Places")
         }
         .task {
             await interactor.loadPlaces()
+        }
+    }
+    
+    var segmentsView: some View {
+        Picker("", selection: $selectedSegment) {
+            Text("List")
+                .tag(Segments.list)
+            Text("Custom")
+                .tag(Segments.custom)
+        }
+        .pickerStyle(.segmented)
+        .padding()
+    }
+    
+    @ViewBuilder
+    var listView: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .multilineTextAlignment(.leading)
+                        .foregroundColor(.red)
+                }
+                
+                ForEach(viewModel.places) { place in
+                    placeCell(place)
+                }
+            }
+            .padding(20)
         }
     }
 
@@ -44,17 +83,43 @@ struct PlacesView: View {
             HStack {
                 Text(place.name)
                     .font(.headline)
-                    .foregroundColor(Color(red: 4/255, green: 106/255, blue: 56/255))
+                    .foregroundColor(customGreenColor)
                 Spacer()
             }
             HStack {
                 Text(place.location)
                     .font(.subheadline)
                     .monospacedDigit()
-                    .foregroundStyle(Color(red: 0, green: 58/255, blue: 83/255))
+                    .foregroundStyle(customGreyColor)
                 Spacer()
             }
         }
+    }
+    
+    @ViewBuilder
+    var customCoordinatesView: some View {
+        TextField("Enter Latitude", text: $latitude)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .keyboardType(.decimalPad)
+            .padding()
+        
+        TextField("Enter Longitude", text: $longitude)
+            .textFieldStyle(RoundedBorderTextFieldStyle())
+            .keyboardType(.decimalPad)
+            .padding()
+        
+        Button {
+            
+        } label: {
+            Text("Go to Coordinates")
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(customGreenColor)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+        }
+        .padding()
     }
 }
 
@@ -62,7 +127,7 @@ struct PlacesView: View {
 #Preview("Loading State") {
     let viewModel = PlacesViewModel()
     let PreviewsPresenter = PreviewsPresenter(viewModel, isLoading: true)
-    PlacesView(viewModel: viewModel, interactor: NullInteractor())
+    PlacesView(interactor: NullInteractor(), viewModel: viewModel)
 }
 
 #Preview("Loaded Places") {
@@ -71,13 +136,13 @@ struct PlacesView: View {
         PlaceUIData(id: UUID(), name: "New York", location: "(40.730610, 4-73.935242)"),
         PlaceUIData(id: UUID(), name: "Amsterdam", location: "(52.377956,  4.897070)")
     ])
-    PlacesView(viewModel: viewModel, interactor: NullInteractor())
+    PlacesView(interactor: NullInteractor(), viewModel: viewModel)
 }
 
 #Preview("Error") {
     let viewModel = PlacesViewModel()
     let PreviewsPresenter = PreviewsPresenter(viewModel, errorMessage: "Something bad happened, please try again.")
-    PlacesView(viewModel: viewModel, interactor: NullInteractor())
+    PlacesView(interactor: NullInteractor(), viewModel: viewModel)
 }
 
 private struct PreviewsPresenter {
