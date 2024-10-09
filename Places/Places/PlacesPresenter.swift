@@ -21,14 +21,14 @@ public class PlacesPresenter {
     }
     
     public func didStartLoadingPlaces() {
-        view.showLoading(isLoading: true)
+        view.displayLoading(isLoading: true)
     }
     
     public func didFinishLoadingPlaces(with places: [Place]) {
-        view.showPlaces(places.map { PlaceUIData(
+        view.displayPlaces(places.map { PlaceUIData(
             name: $0.name?.capitalized ?? "Unknown Location",
             location: "(\($0.latitude), \($0.longitude))"
         )})
-        view.showLoading(isLoading: false)
+        view.displayLoading(isLoading: false)
     }
 }

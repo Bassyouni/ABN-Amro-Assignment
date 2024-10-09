@@ -90,11 +90,11 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
         case showPlaces
     }
     
-    func showLoading(isLoading: Bool) {
+    func displayLoading(isLoading: Bool) {
         messages.append(isLoading ? .showLoading : .hideLoading)
     }
     
-    func showPlaces(_ places: [PlaceUIData]) {
+    func displayPlaces(_ places: [PlaceUIData]) {
         messages.append(.showPlaces)
         receivedPleaces.append(places)
     }

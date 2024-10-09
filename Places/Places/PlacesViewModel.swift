@@ -8,8 +8,8 @@
 import Foundation
 
 public protocol PlacesDisplayLogic {
-    func showLoading(isLoading: Bool)
-    func showPlaces(_ places: [PlaceUIData])
+    func displayLoading(isLoading: Bool)
+    func displayPlaces(_ places: [PlaceUIData])
 }
 
 public class PlacesViewModel {
