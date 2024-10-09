@@ -16,9 +16,13 @@ public protocol PlacesLoader {
 }
 
 public class PlacesInteractor {
-    public init(loader: PlacesLoader) {}
+    private let loader: PlacesLoader
+    
+    public init(loader: PlacesLoader) {
+        self.loader = loader
+    }
     
     public func loadPlaces() async {
-        
+        await loader.loadPlaces()
     }
 }

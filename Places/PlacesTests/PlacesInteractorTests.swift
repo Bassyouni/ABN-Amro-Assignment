@@ -16,6 +16,15 @@ final class PlacesInteractorTests: XCTestCase {
     
         XCTAssertEqual(env.loaderSpy.loadPlacesCallCount, 0)
     }
+    
+    func test_loadPlaces_calledTwice_requestsToLoadPlacesTwice() async {
+        let sut = makeSUT()
+        
+        await sut.loadPlaces()
+        await sut.loadPlaces()
+        
+        XCTAssertEqual(env.loaderSpy.loadPlacesCallCount, 2)
+    }
 }
 
 extension PlacesInteractorTests {
