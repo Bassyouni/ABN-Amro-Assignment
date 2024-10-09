@@ -5,6 +5,7 @@
 //  Created by Omar Bassyouni on 09/10/2024.
 //
 
+import Combine
 import Foundation
 
 public protocol PlacesDisplayLogic {
@@ -13,6 +14,10 @@ public protocol PlacesDisplayLogic {
     func displayError(message: String?)
 }
 
-public class PlacesViewModel {
+@MainActor
+public class PlacesViewModel: ObservableObject {
     
+    @Published public var isLoading = false
+    
+    public init() {}
 }
