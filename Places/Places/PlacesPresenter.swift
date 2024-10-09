@@ -13,7 +13,7 @@ public protocol PlacesPresentationLogic {
     func didFinishLoadingPlaces(with error: Error)
 }
 
-public class PlacesPresenter {
+public class PlacesPresenter: PlacesPresentationLogic {
     let view: PlacesDisplayLogic
     
     public init(view: PlacesDisplayLogic) {
