@@ -16,6 +16,15 @@ final class PlacesRouterTests: XCTestCase {
         
         XCTAssertEqual(env.urlOpnerSpy.receivedURLs, [])
     }
+    
+    func test_navigateToPlace_whenURLEncoderReturnNil_doesNothing() {
+        let sut = makeSUT()
+        env.urlEncoderStub.stubbedURL = nil
+        
+        sut.navigateTo(place: Place(latitude: 1, longitude: 1))
+        
+        XCTAssertEqual(env.urlOpnerSpy.receivedURLs, [])
+    }
 }
 
 extension PlacesRouterTests {
@@ -39,7 +48,7 @@ private class URLOpenerSpy: URLOpener {
     }
 }
 
-private struct PlacesURLEncoderStub: PlacesURLEncoder {
+private class PlacesURLEncoderStub: PlacesURLEncoder {
     var stubbedURL: URL?
     
     func encodeWikipediaURL(latitude: Double, longitude: Double) -> URL? {
