@@ -12,10 +12,8 @@ final class PlacesInteractorTests: XCTestCase {
     private let env = Environment()
     
     func test_init_doesLoadPlaces() async {
-        let sut = makeSUT()
-        
-        await sut.loadPlaces()
-        
+        _ = makeSUT()
+    
         XCTAssertEqual(env.loaderSpy.loadPlacesCallCount, 0)
     }
 }
