@@ -8,14 +8,14 @@
 import Foundation
 
 protocol PlacesBusinessLogic {
-    
+    func loadPlaces() async
 }
 
 public protocol PlacesLoader {
     func loadPlaces() async throws -> [Place]
 }
 
-public class PlacesInteractor {
+public class PlacesInteractor: PlacesBusinessLogic {
     private let loader: PlacesLoader
     private let presenter: PlacesPresentationLogic
     
