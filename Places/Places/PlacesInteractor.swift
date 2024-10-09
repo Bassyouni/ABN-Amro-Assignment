@@ -9,6 +9,7 @@ import Foundation
 
 protocol PlacesBusinessLogic {
     func loadPlaces() async
+    func didChoosePlace(withID id: UUID)
 }
 
 public class PlacesInteractor: PlacesBusinessLogic {
@@ -34,5 +35,9 @@ public class PlacesInteractor: PlacesBusinessLogic {
         catch {
             presenter.didFinishLoadingPlaces(with: PlacesInteractor.Error.failedToLoadPlaces)
         }
+    }
+    
+    public func didChoosePlace(withID id: UUID) {
+        
     }
 }

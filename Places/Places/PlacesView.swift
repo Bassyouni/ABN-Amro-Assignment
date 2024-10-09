@@ -79,19 +79,23 @@ struct PlacesView: View {
     }
 
     func placeCell(_ place: PlaceUIData) -> some View {
-        VStack(alignment: .leading, spacing: 5) {
-            HStack {
-                Text(place.name)
-                    .font(.headline)
-                    .foregroundColor(customGreenColor)
-                Spacer()
-            }
-            HStack {
-                Text(place.location)
-                    .font(.subheadline)
-                    .monospacedDigit()
-                    .foregroundStyle(customGreyColor)
-                Spacer()
+        Button {
+            interactor.didChoosePlace(withID: place.id)
+        } label: {
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Text(place.name)
+                        .font(.headline)
+                        .foregroundColor(customGreenColor)
+                    Spacer()
+                }
+                HStack {
+                    Text(place.location)
+                        .font(.subheadline)
+                        .monospacedDigit()
+                        .foregroundStyle(customGreyColor)
+                    Spacer()
+                }
             }
         }
     }
@@ -160,4 +164,5 @@ private struct PreviewsPresenter {
 
 private struct NullInteractor: PlacesBusinessLogic {
     func loadPlaces() async {}
+    func didChoosePlace(withID id: UUID) {}
 }
