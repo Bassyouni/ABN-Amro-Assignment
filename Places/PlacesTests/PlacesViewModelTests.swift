@@ -35,8 +35,8 @@ final class PlacesViewModelTests: XCTestCase {
     func test_displayPlaces_setsDataToPlaces() {
         let sut = makeSUT()
         let places = [
-            PlaceUIData(name: "any name", location: "any location"),
-            PlaceUIData(name: "any", location: "any"),
+            PlaceUIData(id: UUID(), name: "any name", location: "any location"),
+            PlaceUIData(id: UUID(),name: "any", location: "any"),
         ]
         
         sut.displayPlaces(places)

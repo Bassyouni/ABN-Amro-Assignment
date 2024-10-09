@@ -27,6 +27,7 @@ public class PlacesPresenter: PlacesPresentationLogic {
     
     public func didFinishLoadingPlaces(with places: [Place]) {
         view.displayPlaces(places.map { PlaceUIData(
+            id: $0.id,
             name: $0.name?.capitalized ?? "Unknown Location",
             location: "(\($0.latitude), \($0.longitude))"
         )})
