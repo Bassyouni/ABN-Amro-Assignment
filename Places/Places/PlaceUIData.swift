@@ -9,6 +9,6 @@ import Foundation
 
 public struct PlaceUIData: Identifiable {
     public let id = UUID()
-    let name: String
-    let location: String
+    public let name: String
+    public let location: String
 }
