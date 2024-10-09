@@ -12,17 +12,24 @@ protocol PlacesBusinessLogic {
     func didChoosePlace(withID id: UUID)
 }
 
+public protocol PlacesTranstions {
+    func navigateTo(place: Place)
+}
+
 public class PlacesInteractor: PlacesBusinessLogic {
     private let loader: PlacesLoader
     private let presenter: PlacesPresentationLogic
+    private let router: PlacesTranstions
+    private var places = [Place]()
     
     public enum Error: Swift.Error {
         case failedToLoadPlaces
     }
     
-    public init(loader: PlacesLoader, presenter: PlacesPresentationLogic) {
+    public init(loader: PlacesLoader, presenter: PlacesPresentationLogic, router: PlacesTranstions) {
         self.loader = loader
         self.presenter = presenter
+        self.router = router
     }
     
     public func loadPlaces() async {
@@ -30,6 +37,7 @@ public class PlacesInteractor: PlacesBusinessLogic {
         
         do {
             let places = try await loader.loadPlaces()
+            self.places = places
             presenter.didFinishLoadingPlaces(with: places)
         }
         catch {
@@ -38,6 +46,8 @@ public class PlacesInteractor: PlacesBusinessLogic {
     }
     
     public func didChoosePlace(withID id: UUID) {
+        guard let place = places.first(where: { $0.id == id }) else { return }
         
+        router.navigateTo(place: place)
     }
 }

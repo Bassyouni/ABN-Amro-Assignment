@@ -8,10 +8,10 @@
 import Foundation
 
 public struct Place: Equatable {
-    let id = UUID()
-    let name: String?
-    let latitude: Double
-    let longitude: Double
+    public let id = UUID()
+    public let name: String?
+    public let latitude: Double
+    public let longitude: Double
     
     public init(name: String? = nil, latitude: Double, longitude: Double) {
         self.name = name

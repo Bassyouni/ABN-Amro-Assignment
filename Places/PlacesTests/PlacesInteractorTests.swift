@@ -47,16 +47,30 @@ final class PlacesInteractorTests: XCTestCase {
         
         XCTAssertEqual(env.presenterSpy.messages, [.loading, .error(PlacesInteractor.Error.failedToLoadPlaces)])
     }
+    
+    func test_didChoosePlace_asksRouterToNavigateToPlace() async {
+        let sut = makeSUT()
+        let place1 = Place(name: "any", latitude: 1, longitude: 1)
+        let place2 = Place(name: nil, latitude: 2, longitude: 2)
+        let place3 = Place(name: "any name", latitude: 3, longitude: 3)
+        env.loaderSpy.stubbedLoadPlacesResult = .success([place1, place2, place3])
+        await sut.loadPlaces()
+        
+        sut.didChoosePlace(withID: place2.id)
+        
+        XCTAssertEqual(env.routerSpy.transitions, [.place(place2)])
+    }
 }
 
 extension PlacesInteractorTests {
     private struct Environment {
         let loaderSpy = PlacesLoaderSpy()
         let presenterSpy = PlacesPresenterSpy()
+        let routerSpy = RouterSpy()
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> PlacesInteractor {
-        let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy)
+        let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy, router: env.routerSpy)
         checkForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
@@ -106,6 +120,18 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
     
     func didFinishLoadingPlaces(with error: Error) {
         messages.append(.error(error))
+    }
+}
+
+private class RouterSpy: PlacesTranstions {
+    private(set) var transitions = [Transitions]()
+    
+    enum Transitions: Equatable {
+        case place(Place)
+    }
+    
+    func navigateTo(place: Place) {
+        transitions.append(.place(place))
     }
 }
 

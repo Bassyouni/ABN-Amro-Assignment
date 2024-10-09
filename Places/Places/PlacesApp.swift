@@ -13,7 +13,7 @@ struct PlacesApp: App {
         WindowGroup {
             let viewModel = PlacesViewModel()
             let presenter = PlacesPresenter(view: MainQueueDispatchDecorator(decoratee: viewModel))
-            let interactor = PlacesInteractor(loader: BackgroundQueuePlacesLoader() , presenter: presenter)
+            let interactor = PlacesInteractor(loader: BackgroundQueuePlacesLoader(), presenter: presenter, router: NullRouter())
             PlacesView(interactor: interactor, viewModel: viewModel)
         }
     }
@@ -37,4 +37,8 @@ private class BackgroundQueuePlacesLoader: PlacesLoader {
             }
         }
     }
+}
+
+private struct NullRouter: PlacesTranstions {
+    func navigateTo(place: Place) {}
 }
