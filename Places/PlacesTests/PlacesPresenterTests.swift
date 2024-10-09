@@ -40,6 +40,14 @@ final class PlacesPresenterTests: XCTestCase {
         
         XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.name, "Unknown Location")
     }
+    
+    func test_didFinishLoadingPlaces_whenNameIsNotCapitalziedSetsNameToBeCapitalized() {
+        let sut = makeSUT()
+        
+        sut.didFinishLoadingPlaces(with: [Place(name: "new york", latitude: 1, longitude: 1)])
+        
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.name, "New York")
+    }
 }
 
 extension PlacesPresenterTests {

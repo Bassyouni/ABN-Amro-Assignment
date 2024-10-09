@@ -25,7 +25,7 @@ public class PlacesPresenter {
     }
     
     public func didFinishLoadingPlaces(with places: [Place]) {
-        view.showPlaces(places.map { _ in PlaceUIData(name: "Unknown Location", location: "") })
+        view.showPlaces(places.map { PlaceUIData(name: $0.name?.capitalized ?? "Unknown Location", location: "") })
         view.showLoading(isLoading: false)
     }
 }
