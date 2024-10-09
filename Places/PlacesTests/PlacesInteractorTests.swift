@@ -32,14 +32,6 @@ extension PlacesInteractorTests {
     }
 }
 
-extension XCTestCase {
-    func checkForMemoryLeaks(_ instance: AnyObject, file: StaticString = #filePath, line: UInt = #line) {
-        addTeardownBlock { [weak instance] in
-            XCTAssertNil(instance, "Potential memory leak for instance", file: file, line: line)
-        }
-    }
-}
-
 private class PlacesLoaderSpy: PlacesLoader {
     var loadPlacesCallCount: Int = 0
     
