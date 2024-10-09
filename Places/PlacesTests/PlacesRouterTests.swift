@@ -25,6 +25,16 @@ final class PlacesRouterTests: XCTestCase {
         
         XCTAssertEqual(env.urlOpnerSpy.receivedURLs, [])
     }
+    
+    func test_navigateToPlace_whenURLEncoderReturnURL_requestToOpenURL() {
+        let sut = makeSUT()
+        let url = URL(string: "www.anyURL.com")!
+        env.urlEncoderStub.stubbedURL = url
+        
+        sut.navigateTo(place: Place(latitude: 1, longitude: 1))
+        
+        XCTAssertEqual(env.urlOpnerSpy.receivedURLs, [url])
+    }
 }
 
 extension PlacesRouterTests {

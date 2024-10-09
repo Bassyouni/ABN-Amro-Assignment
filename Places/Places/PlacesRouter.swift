@@ -25,7 +25,9 @@ public final class PlacesRouter: PlacesTranstions {
     }
     
     public func navigateTo(place: Place) {
+        guard let url = urlEncoder.encodeWikipediaURL(latitude: 0, longitude: 0) else { return }
         
+        urlOpner.open(url)
     }
 }
 
