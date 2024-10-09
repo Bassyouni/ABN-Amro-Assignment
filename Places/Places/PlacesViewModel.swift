@@ -9,7 +9,7 @@ import Foundation
 
 public protocol PlacesDisplayLogic {
     func showLoading(isLoading: Bool)
-    func showPlaces(_ places: PlaceUIData)
+    func showPlaces(_ places: [PlaceUIData])
 }
 
 public class PlacesViewModel {

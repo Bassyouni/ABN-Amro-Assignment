@@ -23,4 +23,9 @@ public class PlacesPresenter {
     public func didStartLoadingPlaces() {
         view.showLoading(isLoading: true)
     }
+    
+    public func didFinishLoadingPlaces(with places: [Place]) {
+        view.showPlaces([])
+        view.showLoading(isLoading: false)
+    }
 }

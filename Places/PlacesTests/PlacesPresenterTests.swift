@@ -24,6 +24,14 @@ final class PlacesPresenterTests: XCTestCase {
         
         XCTAssertEqual(env.viewModelSpy.messages, [.showLoading])
     }
+    
+    func test_didFinishLoadingPlaces_requestsViewToShowPlacesAndThenHideLoading() {
+        let sut = makeSUT()
+        
+        sut.didFinishLoadingPlaces(with: [Place(name: "any name", latitude: 1.2, longitude: 1)])
+        
+        XCTAssertEqual(env.viewModelSpy.messages, [.showPlaces, .hideLoading])
+    }
 }
 
 extension PlacesPresenterTests {
@@ -44,14 +52,14 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
     enum Message: Equatable {
         case showLoading
         case hideLoading
-        case showPlaces(PlaceUIData)
+        case showPlaces
     }
     
     func showLoading(isLoading: Bool) {
         messages.append(isLoading ? .showLoading : .hideLoading)
     }
     
-    func showPlaces(_ places: PlaceUIData) {
-        messages.append(.showPlaces(places))
+    func showPlaces(_ places: [PlaceUIData]) {
+        messages.append(.showPlaces)
     }
 }
