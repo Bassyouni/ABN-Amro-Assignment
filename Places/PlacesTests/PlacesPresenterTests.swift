@@ -17,12 +17,12 @@ final class PlacesPresenterTests: XCTestCase {
         XCTAssertEqual(env.viewModelSpy.messages, [])
     }
     
-    func test_didStartLoadingPlaces_requestsViewToShowLoading() {
+    func test_didStartLoadingPlaces_requestsViewToShowLoadingAndHideError() {
         let sut = makeSUT()
         
         sut.didStartLoadingPlaces()
         
-        XCTAssertEqual(env.viewModelSpy.messages, [.showLoading])
+        XCTAssertEqual(env.viewModelSpy.messages, [.showLoading, .hideError])
     }
     
     func test_didFinishLoadingPlaces_requestsViewToShowPlacesAndThenHideLoading() {
@@ -88,6 +88,8 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
         case showLoading
         case hideLoading
         case showPlaces
+        case showError(String)
+        case hideError
     }
     
     func displayLoading(isLoading: Bool) {
@@ -101,5 +103,13 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
     
     func receivedPlaces(at index: Int = 0) -> [PlaceUIData] {
         receivedPleaces[index]
+    }
+    
+    func displayError(message: String?) {
+        if let message = message {
+            messages.append(.showError(message))
+        } else {
+            messages.append(.hideError)
+        }
     }
 }
