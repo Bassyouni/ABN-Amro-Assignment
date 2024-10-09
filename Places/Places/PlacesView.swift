@@ -20,13 +20,12 @@ struct PlacesView: View {
                         ProgressView()
                     }
                     
-
                     if let errorMessage = viewModel.errorMessage {
                         Text(errorMessage)
                             .multilineTextAlignment(.leading)
                             .foregroundColor(.red)
                     }
-
+                    
                     ForEach(viewModel.places) { place in
                         placeCell(place)
                     }
@@ -52,6 +51,7 @@ struct PlacesView: View {
                 Text(place.location)
                     .font(.subheadline)
                     .monospacedDigit()
+                    .foregroundStyle(Color(red: 0, green: 58/255, blue: 83/255))
                 Spacer()
             }
         }
