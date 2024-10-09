@@ -14,7 +14,6 @@ public protocol PlacesDisplayLogic {
     func displayError(message: String?)
 }
 
-@MainActor
 public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     
     @Published public private(set) var isLoading = false
