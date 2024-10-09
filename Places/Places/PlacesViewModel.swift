@@ -15,7 +15,7 @@ public protocol PlacesDisplayLogic {
 }
 
 @MainActor
-public class PlacesViewModel: ObservableObject {
+public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     
     @Published public private(set) var isLoading = false
     @Published public private(set) var places = [PlaceUIData]()
