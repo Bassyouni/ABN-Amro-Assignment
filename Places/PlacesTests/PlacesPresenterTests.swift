@@ -28,9 +28,17 @@ final class PlacesPresenterTests: XCTestCase {
     func test_didFinishLoadingPlaces_requestsViewToShowPlacesAndThenHideLoading() {
         let sut = makeSUT()
         
-        sut.didFinishLoadingPlaces(with: [Place(name: "any name", latitude: 1.2, longitude: 1)])
+        sut.didFinishLoadingPlaces(with: [Place(name: "", latitude: 1.2, longitude: 1)])
         
         XCTAssertEqual(env.viewModelSpy.messages, [.showPlaces, .hideLoading])
+    }
+    
+    func test_didFinishLoadingPlaces_whenNameInPlaceIsNilSetItToDefaultValue() {
+        let sut = makeSUT()
+        
+        sut.didFinishLoadingPlaces(with: [Place(name: nil, latitude: 1, longitude: 1)])
+        
+        XCTAssertEqual(env.viewModelSpy.receivedPlaces().first?.name, "Unknown Location")
     }
 }
 
@@ -48,6 +56,7 @@ extension PlacesPresenterTests {
 
 private class PlacesViewModelSpy: PlacesDisplayLogic {
     private(set) var messages = [Message]()
+    private var receivedPleaces = [[PlaceUIData]]()
     
     enum Message: Equatable {
         case showLoading
@@ -61,5 +70,10 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
     
     func showPlaces(_ places: [PlaceUIData]) {
         messages.append(.showPlaces)
+        receivedPleaces.append(places)
+    }
+    
+    func receivedPlaces(at index: Int = 0) -> [PlaceUIData] {
+        receivedPleaces[index]
     }
 }
