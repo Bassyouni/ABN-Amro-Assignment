@@ -10,6 +10,7 @@ import SwiftUI
 struct PlacesView: View {
     
     @ObservedObject var viewModel: PlacesViewModel
+    let interactor: PlacesBusinessLogic
     
     var body: some View {
         NavigationView {
@@ -33,6 +34,9 @@ struct PlacesView: View {
                 .padding(20)
             }
             .navigationTitle("Places")
+        }
+        .task {
+            await interactor.loadPlaces()
         }
     }
 
@@ -58,7 +62,7 @@ struct PlacesView: View {
 #Preview("Loading State") {
     let viewModel = PlacesViewModel()
     let PreviewsPresenter = PreviewsPresenter(viewModel, isLoading: true)
-    PlacesView(viewModel: viewModel)
+    PlacesView(viewModel: viewModel, interactor: NullInteractor())
 }
 
 #Preview("Loaded Places") {
@@ -67,14 +71,15 @@ struct PlacesView: View {
         PlaceUIData(id: UUID(), name: "New York", location: "(40.730610, 4-73.935242)"),
         PlaceUIData(id: UUID(), name: "Amsterdam", location: "(52.377956,  4.897070)")
     ])
-    PlacesView(viewModel: viewModel)
+    PlacesView(viewModel: viewModel, interactor: NullInteractor())
 }
 
 #Preview("Error") {
     let viewModel = PlacesViewModel()
     let PreviewsPresenter = PreviewsPresenter(viewModel, errorMessage: "Something bad happened, please try again.")
-    PlacesView(viewModel: viewModel)
+    PlacesView(viewModel: viewModel, interactor: NullInteractor())
 }
+
 private struct PreviewsPresenter {
     init(
         _ view: PlacesDisplayLogic,
@@ -86,4 +91,8 @@ private struct PreviewsPresenter {
         view.displayPlaces(places)
         view.displayError(message: errorMessage)
     }
+}
+
+private struct NullInteractor: PlacesBusinessLogic {
+    func loadPlaces() async {}
 }
