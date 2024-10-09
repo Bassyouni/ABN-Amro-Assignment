@@ -8,7 +8,8 @@
 import Foundation
 
 public protocol PlacesPresentationLogic {
-    
+    func didStartLoadingPlaces()
+    func didFinishLoadingPlaces(with places: [Place])
 }
 
 public class PlacesPresenter {

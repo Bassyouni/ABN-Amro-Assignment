@@ -25,25 +25,59 @@ final class PlacesInteractorTests: XCTestCase {
         
         XCTAssertEqual(env.loaderSpy.loadPlacesCallCount, 2)
     }
+    
+    func test_loadPlaces_onLoadingPlacesSuccess_notifyPresenterWithPlaces() async {
+        let sut = makeSUT()
+        let places = [
+            Place(name: "any name", latitude: 1, longitude: 1),
+            .init(name: nil, latitude: 2, longitude: 2)
+            
+        ]
+        env.loaderSpy.stubbedLoadPlacesResult = places
+        
+        await sut.loadPlaces()
+        
+        XCTAssertEqual(env.presenterSpy.messages, [.loading, .finished(places)])
+    }
 }
 
 extension PlacesInteractorTests {
     private struct Environment {
         let loaderSpy = PlacesLoaderSpy()
+        let presenterSpy = PlacesPresenterSpy()
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> PlacesInteractor {
-        let sut = PlacesInteractor(loader: env.loaderSpy)
+        let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy)
         checkForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
 }
 
 private class PlacesLoaderSpy: PlacesLoader {
-    var loadPlacesCallCount: Int = 0
+    private(set) var loadPlacesCallCount: Int = 0
+    var stubbedLoadPlacesResult = [Place]()
     
-    func loadPlaces() async {
+    func loadPlaces() async -> [Place] {
         loadPlacesCallCount += 1
+        return stubbedLoadPlacesResult
+    }
+}
+
+private class PlacesPresenterSpy: PlacesPresentationLogic {
+    private(set) var messages = [Message]()
+    
+    enum Message: Equatable {
+        case loading
+        case finished([Place])
+    }
+    
+    func didStartLoadingPlaces() {
+        messages.append(.loading)
+    }
+    
+    func didFinishLoadingPlaces(with places: [Places.Place]) {
+        messages.append(.finished(places))
     }
 }
 
