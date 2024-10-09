@@ -28,10 +28,7 @@ final class PlacesInteractorTests: XCTestCase {
     
     func test_loadPlaces_onLoadingPlacesSuccess_notifyPresenterWithPlaces() async {
         let sut = makeSUT()
-        let places = [
-            Place(name: "any name", latitude: 1, longitude: 1),
-            Place(name: nil, latitude: 2, longitude: 2)
-        ]
+        let places = [ uniquePlace(name: "any name"), uniquePlace(name: nil)]
         env.loaderSpy.stubbedLoadPlacesResult = .success(places)
         
         await sut.loadPlaces()
@@ -50,15 +47,13 @@ final class PlacesInteractorTests: XCTestCase {
     
     func test_didChoosePlace_asksRouterToNavigateToPlace() async {
         let sut = makeSUT()
-        let place1 = Place(name: "any", latitude: 1, longitude: 1)
-        let place2 = Place(name: nil, latitude: 2, longitude: 2)
-        let place3 = Place(name: "any name", latitude: 3, longitude: 3)
-        env.loaderSpy.stubbedLoadPlacesResult = .success([place1, place2, place3])
+        let place = Place(name: "any", latitude: 2, longitude: 2)
+        env.loaderSpy.stubbedLoadPlacesResult = .success([uniquePlace(), place, uniquePlace()])
         await sut.loadPlaces()
         
-        sut.didChoosePlace(withID: place2.id)
+        sut.didChoosePlace(withID: place.id)
         
-        XCTAssertEqual(env.routerSpy.transitions, [.place(place2)])
+        XCTAssertEqual(env.routerSpy.transitions, [.place(place)])
     }
 }
 
@@ -73,6 +68,10 @@ extension PlacesInteractorTests {
         let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy, router: env.routerSpy)
         checkForMemoryLeaks(sut, file: file, line: line)
         return sut
+    }
+    
+    private func uniquePlace(name: String? = nil) -> Place {
+        Place(name: name, latitude: Double.random(in: 1...10), longitude: Double.random(in: 1...10))
     }
 }
 
