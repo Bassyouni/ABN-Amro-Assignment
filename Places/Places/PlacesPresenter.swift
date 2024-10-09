@@ -27,6 +27,6 @@ public class PlacesPresenter {
     }
     
     public func didStartLoadingPlaces() {
-        
+        view.showLoading(isLoading: true)
     }
 }

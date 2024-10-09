@@ -16,6 +16,14 @@ final class PlacesPresenterTests: XCTestCase {
     
         XCTAssertEqual(env.viewModelSpy.messages, [])
     }
+    
+    func test_didStartLoadingPlaces_requestsViewToShowLoading() {
+        let sut = makeSUT()
+        
+        sut.didStartLoadingPlaces()
+        
+        XCTAssertEqual(env.viewModelSpy.messages, [.showLoading])
+    }
 }
 
 extension PlacesPresenterTests {
