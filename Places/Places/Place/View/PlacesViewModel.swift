@@ -53,7 +53,8 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     }
     
     public func displayCustomCoordinatesProcessSuccess() {
-        
+        customLatitude = ""
+        customLongitude = ""
     }
     
     public func displayCustomCoordinatesError(message: String) {

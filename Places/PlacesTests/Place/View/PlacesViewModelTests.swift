@@ -93,6 +93,17 @@ final class PlacesViewModelTests: XCTestCase {
         sut.customLongitude = longitude
         XCTAssertEqual(sut.customCoordinatesErrorMessage, errorMessage)
     }
+    
+    func test_displayCustomCoordinatesProcessSuccess_emptysCoordinates() {
+        let sut = makeSUT()
+        sut.customLatitude = "1"
+        sut.customLongitude = "1"
+        
+        sut.displayCustomCoordinatesProcessSuccess()
+        
+        XCTAssertEqual(sut.customLatitude, "")
+        XCTAssertEqual(sut.customLongitude, "")
+    }
 }
 
 extension PlacesViewModelTests {
