@@ -54,7 +54,9 @@ public class PlacesInteractor: PlacesBusinessLogic {
     }
     
     public func didCreateCustomCoordines(latitude: String, longitude: String) {
-        if Double(latitude) == nil || Double(longitude) == nil {
+        if let latitude = Double(latitude), let longitude = Double(longitude) {
+            router.navigateTo(place: Place(latitude: latitude, longitude: longitude))
+        } else {
             presenter.didFinishProcessingCustomCoordinates(with: Error.invalidCustomCoordinates)
         }
     }
