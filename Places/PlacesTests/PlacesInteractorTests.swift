@@ -72,19 +72,11 @@ final class PlacesInteractorTests: XCTestCase {
     
     func test_didCreateCustomCoordines_whenCoordinatesAreValid_asksRouterToNavigateToPlaceWithCoordinates() {
         let sut = makeSUT()
-        let latitude = 22.0
-        let longitude = 12.0
+        let place = Place(latitude: 22.0, longitude: 12.0)
         
-        sut.didCreateCustomCoordines(latitude: "\(latitude)", longitude: "\(longitude)")
+        sut.didCreateCustomCoordines(latitude: "\(place.latitude)", longitude: "\(place.longitude)")
         
-        if case let .place(place) = env.routerSpy.transitions.first {
-            XCTAssertEqual(place.name, nil)
-            XCTAssertEqual(place.latitude, latitude)
-            XCTAssertEqual(place.longitude, longitude)
-            XCTAssertEqual(env.routerSpy.transitions.count, 1)
-        } else {
-            XCTFail("Expected a transtion to Place with custom coordinates")
-        }
+        XCTAssertEqual(env.routerSpy.transitions, [.place(place)])
     }
 }
 
