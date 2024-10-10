@@ -17,9 +17,15 @@ struct PlacesApp: App {
             let router = PlacesRouter(urlOpner: UIApplication.shared, urlEncoder: URLEncoder())
             let viewModel = PlacesViewModel()
             let presenter = PlacesPresenter(view: MainQueueDispatchDecorator(decoratee: viewModel))
-            let interactor = PlacesInteractor(loader: placesLoader, presenter: presenter, router: router)
+            let interactor = PlacesInteractor(loader: placesLoader, presenter: presenter, router: router, coordinatesValidator: NullCoordinatesValidator())
             
             PlacesView(interactor: interactor, viewModel: viewModel)
         }
+    }
+}
+
+struct NullCoordinatesValidator: CoordinatesValidator {
+    func isValid(latitude: Double, longitude: Double) -> Bool {
+        true
     }
 }

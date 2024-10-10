@@ -70,9 +70,32 @@ final class PlacesInteractorTests: XCTestCase {
         XCTAssertEqual(env.presenterSpy.messages, [expectedResult, expectedResult, expectedResult])
     }
     
+    func test_didCreateCustomCoordines_whenCoordinatesAreDoubles_passesCorrectDataToValidator() {
+        let sut = makeSUT()
+        let latitude = 12.0
+        let longitude = 22.0
+        
+        sut.didCreateCustomCoordines(latitude: "\(latitude)", longitude: "\(longitude)")
+        
+        XCTAssertEqual(env.coordinatesValidatorSpy.coordinates.map { $0.latitude }, [latitude])
+        XCTAssertEqual(env.coordinatesValidatorSpy.coordinates.map { $0.longitude }, [longitude])
+    }
+    
+    func test_didCreateCustomCoordines_whenCoordinatesAreNotValid_notifyPresenterWithError() {
+        let sut = makeSUT()
+        env.coordinatesValidatorSpy.stubbedIsValid = false
+        
+        sut.didCreateCustomCoordines(latitude: "\(22.0)", longitude: "\(12.0)")
+        
+        let expectedError = PlacesInteractor.Error.invalidCustomCoordinates
+        let expectedResult = PlacesPresenterSpy.Message.customCoordinatesError(expectedError)
+        XCTAssertEqual(env.presenterSpy.messages, [expectedResult])
+    }
+    
     func test_didCreateCustomCoordines_whenCoordinatesAreValid_asksRouterToNavigateToPlaceWithCoordinates() {
         let sut = makeSUT()
         let place = Place(latitude: 22.0, longitude: 12.0)
+        env.coordinatesValidatorSpy.stubbedIsValid = true
         
         sut.didCreateCustomCoordines(latitude: "\(place.latitude)", longitude: "\(place.longitude)")
         
@@ -81,11 +104,14 @@ final class PlacesInteractorTests: XCTestCase {
     
     func test_didCreateCustomCoordines_whenCoordinatesAreValid_notifyPresenter() {
         let sut = makeSUT()
+        env.coordinatesValidatorSpy.stubbedIsValid = true
         
         sut.didCreateCustomCoordines(latitude: "\(22.0)", longitude: "\(12.0)")
         
         XCTAssertEqual(env.presenterSpy.messages, [.customCoordinatesSuccess])
     }
+    
+    
 }
 
 extension PlacesInteractorTests {
@@ -93,10 +119,11 @@ extension PlacesInteractorTests {
         let loaderSpy = PlacesLoaderSpy()
         let presenterSpy = PlacesPresenterSpy()
         let routerSpy = RouterSpy()
+        let coordinatesValidatorSpy = CoordinatesValidatorSpy()
     }
     
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> PlacesInteractor {
-        let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy, router: env.routerSpy)
+        let sut = PlacesInteractor(loader: env.loaderSpy, presenter: env.presenterSpy, router: env.routerSpy, coordinatesValidator: env.coordinatesValidatorSpy)
         checkForMemoryLeaks(sut, file: file, line: line)
         return sut
     }
@@ -179,6 +206,16 @@ private class RouterSpy: PlacesTranstions {
     
     func navigateTo(place: Place) {
         transitions.append(.place(place))
+    }
+}
+
+private class CoordinatesValidatorSpy: CoordinatesValidator {
+    var stubbedIsValid: Bool = true
+    private(set) var coordinates: [(latitude: Double, longitude: Double)] = []
+    
+    func isValid(latitude: Double, longitude: Double) -> Bool {
+        coordinates.append((latitude, longitude))
+        return stubbedIsValid
     }
 }
 

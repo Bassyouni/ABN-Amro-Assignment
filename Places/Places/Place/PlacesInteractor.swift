@@ -17,10 +17,15 @@ public protocol PlacesTranstions {
     func navigateTo(place: Place)
 }
 
+public protocol CoordinatesValidator {
+    func isValid(latitude: Double, longitude: Double) -> Bool
+}
+
 public class PlacesInteractor: PlacesBusinessLogic {
     private let loader: PlacesLoader
     private let presenter: PlacesPresentationLogic
     private let router: PlacesTranstions
+    private let coordinatesValidator: CoordinatesValidator
     private var places = [Place]()
     
     public enum Error: Swift.Error {
@@ -28,10 +33,11 @@ public class PlacesInteractor: PlacesBusinessLogic {
         case invalidCustomCoordinates
     }
     
-    public init(loader: PlacesLoader, presenter: PlacesPresentationLogic, router: PlacesTranstions) {
+    public init(loader: PlacesLoader, presenter: PlacesPresentationLogic, router: PlacesTranstions, coordinatesValidator: CoordinatesValidator) {
         self.loader = loader
         self.presenter = presenter
         self.router = router
+        self.coordinatesValidator = coordinatesValidator
     }
     
     public func loadPlaces() async {
@@ -54,7 +60,10 @@ public class PlacesInteractor: PlacesBusinessLogic {
     }
     
     public func didCreateCustomCoordines(latitude: String, longitude: String) {
-        if let latitude = Double(latitude), let longitude = Double(longitude) {
+        let latitude = Double(latitude)
+        let longitude = Double(longitude)
+        
+        if let latitude, let longitude, coordinatesValidator.isValid(latitude: latitude, longitude: longitude) {
             router.navigateTo(place: Place(latitude: latitude, longitude: longitude))
             presenter.didFinishProcessingCustomCoordinates()
         } else {
