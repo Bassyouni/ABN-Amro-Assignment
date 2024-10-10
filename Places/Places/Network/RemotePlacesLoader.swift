@@ -18,6 +18,7 @@ public final class RemotePlacesLoader {
     }
     
     public func loadPlaces() async throws -> [Place] {
+        _ = try? await httpClient.get(url: url)
         return []
     }
 }

@@ -16,6 +16,15 @@ final class RemotePlacesLoaderTests: XCTestCase {
         
         XCTAssertEqual(env.client.requestedURLs, [])
     }
+    
+    func test_loadPlaces_requestsDataFromURL() async throws {
+        let url = URL(string: "www.a-url.com")
+        let sut = makeSUT(url: url!)
+        
+        _ = try await sut.loadPlaces()
+        
+        XCTAssertEqual(env.client.requestedURLs, [url])
+    }
 }
 
 extension RemotePlacesLoaderTests {
@@ -32,7 +41,7 @@ extension RemotePlacesLoaderTests {
 
 private final class HTTPClientSpy: HTTPClient {
     private(set) var requestedURLs = [URL]()
-    var stubbedGetResult: Result<Data, Error> = .failure(NSError())
+    var stubbedGetResult: Result<Data, Error> = .success(Data())
     
     func get(url: URL) async throws -> Data {
         requestedURLs.append(url)
