@@ -46,6 +46,17 @@ final class PlacesRouterTests: XCTestCase {
         XCTAssertEqual(env.urlEncoderSpy.receivedLatitudes, [latitude])
         XCTAssertEqual(env.urlEncoderSpy.receivedLongitudes, [longitude])
     }
+    
+    func test_navigateToPlace_passCorrectNameToURLEncoder() {
+        let sut = makeSUT()
+        let name = "any name"
+        let nilName: String? = nil
+        
+        sut.navigateTo(place: Place(name: name, latitude: 1, longitude: 1))
+        sut.navigateTo(place: Place(name: nilName, latitude: 1, longitude: 1))
+        
+        XCTAssertEqual(env.urlEncoderSpy.receivedNames, [name, nilName])
+    }
 }
 
 extension PlacesRouterTests {
@@ -71,7 +82,7 @@ private class URLOpenerSpy: URLOpener {
 
 private class PlacesURLEncoderSpy: PlacesURLEncoder {
     var stubbedURL: URL?
-    private var receivedParameters = [(latitude: Double, longitude: Double)]()
+    private var receivedParameters = [(latitude: Double, longitude: Double, name: String?)]()
     
     var receivedLatitudes: [Double] {
         receivedParameters.map { $0.latitude }
@@ -81,8 +92,12 @@ private class PlacesURLEncoderSpy: PlacesURLEncoder {
         receivedParameters.map { $0.longitude }
     }
     
-    func encodeWikipediaURL(latitude: Double, longitude: Double) -> URL? {
-        receivedParameters.append((latitude: latitude, longitude: longitude))
+    var receivedNames: [String?] {
+        receivedParameters.map { $0.name }
+    }
+    
+    func encodeWikipediaURL(latitude: Double, longitude: Double, name: String?) -> URL? {
+        receivedParameters.append((latitude: latitude, longitude: longitude, name: name))
         return stubbedURL
     }
 }

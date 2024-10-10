@@ -12,7 +12,7 @@ public protocol URLOpener {
 }
 
 public protocol PlacesURLEncoder {
-    func encodeWikipediaURL(latitude: Double, longitude: Double) -> URL?
+    func encodeWikipediaURL(latitude: Double, longitude: Double, name: String?) -> URL?
 }
 
 public final class PlacesRouter: PlacesTranstions {
@@ -25,7 +25,11 @@ public final class PlacesRouter: PlacesTranstions {
     }
     
     public func navigateTo(place: Place) {
-        let url = urlEncoder.encodeWikipediaURL(latitude: place.latitude, longitude: place.longitude)
+        let url = urlEncoder.encodeWikipediaURL(
+            latitude: place.latitude,
+            longitude: place.longitude,
+            name: place.name
+        )
         
         guard let url else { return }
         
