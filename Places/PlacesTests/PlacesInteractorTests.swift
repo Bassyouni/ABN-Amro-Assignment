@@ -13,7 +13,7 @@ final class PlacesInteractorTests: XCTestCase {
     
     func test_init_doesLoadPlaces() async {
         _ = makeSUT()
-    
+        
         XCTAssertEqual(env.loaderSpy.loadPlacesCallCount, 0)
     }
     
@@ -55,6 +55,20 @@ final class PlacesInteractorTests: XCTestCase {
         
         XCTAssertEqual(env.routerSpy.transitions, [.place(place)])
     }
+    
+    func test_didCreateCustomCoordines_whenNotValidDoubles_notifyPresenterWithError() {
+        let sut = makeSUT()
+        let inValidDouble = "non double value"
+        let validDouble = "1.0"
+        
+        sut.didCreateCustomCoordines(latitude: inValidDouble, longitude: validDouble)
+        sut.didCreateCustomCoordines(latitude: validDouble, longitude: inValidDouble)
+        sut.didCreateCustomCoordines(latitude: inValidDouble, longitude: inValidDouble)
+        
+        let expectedError = PlacesInteractor.Error.invalidCustomCoordinates
+        let expectedResult = PlacesPresenterSpy.Message.customCoordinatesError(expectedError)
+        XCTAssertEqual(env.presenterSpy.messages, [expectedResult, expectedResult, expectedResult])
+    }
 }
 
 extension PlacesInteractorTests {
@@ -92,6 +106,7 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
         case loading
         case finished([Place])
         case error(Error)
+        case customCoordinatesError(Error)
         
         static func == (lhs: PlacesPresenterSpy.Message, rhs: PlacesPresenterSpy.Message) -> Bool {
             switch (lhs, rhs) {
@@ -101,6 +116,9 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
                 return placesLHS == placesRHS
                 
             case let (.error(errorLHS as PlacesInteractor.Error), .error(errorRHS as PlacesInteractor.Error)):
+                return errorLHS == errorRHS
+                
+            case let (.customCoordinatesError(errorLHS as PlacesInteractor.Error), .customCoordinatesError(errorRHS as PlacesInteractor.Error)):
                 return errorLHS == errorRHS
                 
             default:
@@ -119,6 +137,10 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
     
     func didFinishLoadingPlaces(with error: Error) {
         messages.append(.error(error))
+    }
+    
+    func didFinishProcessingCustomCoordinates(with error: any Error) {
+        messages.append(.customCoordinatesError(error))
     }
 }
 

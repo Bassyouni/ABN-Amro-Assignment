@@ -10,6 +10,7 @@ import Foundation
 protocol PlacesBusinessLogic {
     func loadPlaces() async
     func didChoosePlace(withID id: UUID)
+    func didCreateCustomCoordines(latitude: String, longitude: String)
 }
 
 public protocol PlacesTranstions {
@@ -24,6 +25,7 @@ public class PlacesInteractor: PlacesBusinessLogic {
     
     public enum Error: Swift.Error {
         case failedToLoadPlaces
+        case invalidCustomCoordinates
     }
     
     public init(loader: PlacesLoader, presenter: PlacesPresentationLogic, router: PlacesTranstions) {
@@ -49,5 +51,11 @@ public class PlacesInteractor: PlacesBusinessLogic {
         guard let place = places.first(where: { $0.id == id }) else { return }
         
         router.navigateTo(place: place)
+    }
+    
+    public func didCreateCustomCoordines(latitude: String, longitude: String) {
+        if Double(latitude) == nil || Double(longitude) == nil {
+            presenter.didFinishProcessingCustomCoordinates(with: Error.invalidCustomCoordinates)
+        }
     }
 }

@@ -165,4 +165,5 @@ private struct PreviewsPresenter {
 private struct NullInteractor: PlacesBusinessLogic {
     func loadPlaces() async {}
     func didChoosePlace(withID id: UUID) {}
+    func didCreateCustomCoordines(latitude: String, longitude: String) {}
 }

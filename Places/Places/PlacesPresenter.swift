@@ -11,6 +11,7 @@ public protocol PlacesPresentationLogic {
     func didStartLoadingPlaces()
     func didFinishLoadingPlaces(with places: [Place])
     func didFinishLoadingPlaces(with error: Error)
+    func didFinishProcessingCustomCoordinates(with error: Error)
 }
 
 public class PlacesPresenter: PlacesPresentationLogic {
@@ -37,5 +38,9 @@ public class PlacesPresenter: PlacesPresentationLogic {
     public func didFinishLoadingPlaces(with error: Error) {
         view.displayError(message: "Unable to load places")
         view.displayLoading(isLoading: false)
+    }
+    
+    public func didFinishProcessingCustomCoordinates(with error: any Error) {
+        
     }
 }
