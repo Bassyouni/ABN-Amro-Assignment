@@ -12,13 +12,21 @@ public final class RemotePlacesLoader {
     private let url: URL
     private let httpClient: HTTPClient
     
+    public enum Error: Swift.Error {
+        case networkError
+    }
+    
     public init(url: URL, httpClient: HTTPClient) {
         self.url = url
         self.httpClient = httpClient
     }
     
     public func loadPlaces() async throws -> [Place] {
-        _ = try? await httpClient.get(url: url)
-        return []
+        do {
+            _ = try await httpClient.get(url: url)
+            return []
+        } catch {
+            throw Error.networkError
+        }
     }
 }

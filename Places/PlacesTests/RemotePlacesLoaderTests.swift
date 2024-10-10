@@ -35,6 +35,19 @@ final class RemotePlacesLoaderTests: XCTestCase {
         
         XCTAssertEqual(env.client.requestedURLs, [url, url])
     }
+    
+    func test_loadPlaces_deliversErrorOnError() async {
+        let sut = makeSUT()
+        env.client.stubbedGetResult = .failure(NSError(domain: "test", code: 0))
+        
+        do  {
+            _ = try await sut.loadPlaces()
+            XCTFail("Expected load places to throw on error")
+        } catch {
+            XCTAssertEqual(error as? RemotePlacesLoader.Error, RemotePlacesLoader.Error.networkError)
+        }
+    }
+        
 }
 
 extension RemotePlacesLoaderTests {
