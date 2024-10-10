@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Place: Equatable {
+public struct Place {
     public let id = UUID()
     public let name: String?
     public let latitude: Double
@@ -17,5 +17,13 @@ public struct Place: Equatable {
         self.name = name
         self.latitude = latitude
         self.longitude = longitude
+    }
+}
+
+extension Place: Equatable {
+    public static func == (lhs: Place, rhs: Place) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.latitude == rhs.latitude &&
+        lhs.longitude == rhs.longitude
     }
 }
