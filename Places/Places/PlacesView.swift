@@ -10,10 +10,8 @@ import SwiftUI
 struct PlacesView: View {
     
     let interactor: PlacesBusinessLogic
-    @ObservedObject var viewModel: PlacesViewModel
     
-    @State private var latitude: String = ""
-    @State private var longitude: String = ""
+    @ObservedObject var viewModel: PlacesViewModel
     @State private var selectedSegment: Segments = .list
     
     private let customGreyColor = Color(red: 0, green: 58/255, blue: 83/255)
@@ -102,15 +100,21 @@ struct PlacesView: View {
     
     @ViewBuilder
     var customCoordinatesView: some View {
-        TextField("Enter Latitude", text: $latitude)
+        TextField("Enter Latitude", text: $viewModel.customLatitude)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .keyboardType(.decimalPad)
             .padding()
         
-        TextField("Enter Longitude", text: $longitude)
+        TextField("Enter Longitude", text: $viewModel.customLongitude)
             .textFieldStyle(RoundedBorderTextFieldStyle())
             .keyboardType(.decimalPad)
             .padding()
+        
+        if let errorMessage = viewModel.customCoordinatesErrorMessage {
+            Text(errorMessage)
+                .multilineTextAlignment(.leading)
+                .foregroundColor(.red)
+        }
         
         Button {
             
