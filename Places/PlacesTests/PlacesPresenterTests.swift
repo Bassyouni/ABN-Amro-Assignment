@@ -75,6 +75,15 @@ final class PlacesPresenterTests: XCTestCase {
         
         XCTAssertEqual(env.viewModelSpy.messages, [.showError(errorMessage), .hideLoading])
     }
+    
+    func test_didFinishProcessingCustomCoordinatesWithError_requestsViewToShowErrorMessage() {
+        let sut = makeSUT()
+        let errorMessage = "Invalid coordinates"
+        
+        sut.didFinishProcessingCustomCoordinates(with: NSError())
+        
+        XCTAssertEqual(env.viewModelSpy.messages, [.showCustomCoordinatesError(errorMessage)])
+    }
 }
 
 extension PlacesPresenterTests {
@@ -99,6 +108,8 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
         case showPlaces
         case showError(String)
         case hideError
+        case showCustomCoordinatesError(String)
+        case hideCustomCoordinatesError(String)
     }
     
     func displayLoading(isLoading: Bool) {
@@ -120,5 +131,9 @@ private class PlacesViewModelSpy: PlacesDisplayLogic {
         } else {
             messages.append(.hideError)
         }
+    }
+    
+    func displayCustomCoordinatesError(message: String) {
+        messages.append(.showCustomCoordinatesError(message))
     }
 }

@@ -41,6 +41,6 @@ public class PlacesPresenter: PlacesPresentationLogic {
     }
     
     public func didFinishProcessingCustomCoordinates(with error: any Error) {
-        
+        view.displayCustomCoordinatesError(message: "Invalid coordinates")
     }
 }

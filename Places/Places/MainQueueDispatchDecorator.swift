@@ -41,4 +41,10 @@ extension MainQueueDispatchDecorator: PlacesDisplayLogic where T == PlacesDispla
             self?.decoratee.displayError(message: message)
         }
     }
+    
+    func displayCustomCoordinatesError(message: String) {
+        dispatch { [weak self] in
+            self?.decoratee.displayCustomCoordinatesError(message: message)
+        }
+    }
 }
