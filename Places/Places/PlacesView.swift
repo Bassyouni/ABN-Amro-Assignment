@@ -117,7 +117,10 @@ struct PlacesView: View {
         }
         
         Button {
-            
+            interactor.didCreateCustomCoordines(
+                latitude: viewModel.customLatitude,
+                longitude: viewModel.customLongitude
+            )
         } label: {
             Text("Go to Coordinates")
                 .fontWeight(.semibold)
