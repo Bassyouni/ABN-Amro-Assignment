@@ -17,7 +17,8 @@ struct PlacesApp: App {
             let router = PlacesRouter(urlOpner: UIApplication.shared, urlEncoder: URLEncoder())
             let viewModel = PlacesViewModel()
             let presenter = PlacesPresenter(view: MainQueueDispatchDecorator(decoratee: viewModel))
-            let interactor = PlacesInteractor(loader: placesLoader, presenter: presenter, router: router, coordinatesValidator: NullCoordinatesValidator())
+            let coordinatesValidator = CLLocationCoordinatesValidator()
+            let interactor = PlacesInteractor(loader: placesLoader, presenter: presenter, router: router, coordinatesValidator: coordinatesValidator)
             
             PlacesView(interactor: interactor, viewModel: viewModel)
         }
