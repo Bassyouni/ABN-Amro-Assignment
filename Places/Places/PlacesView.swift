@@ -102,12 +102,12 @@ struct PlacesView: View {
     var customCoordinatesView: some View {
         TextField("Enter Latitude", text: $viewModel.customLatitude)
             .textFieldStyle(RoundedBorderTextFieldStyle())
-            .keyboardType(.decimalPad)
+            .keyboardType(.numbersAndPunctuation)
             .padding()
         
         TextField("Enter Longitude", text: $viewModel.customLongitude)
             .textFieldStyle(RoundedBorderTextFieldStyle())
-            .keyboardType(.decimalPad)
+            .keyboardType(.numbersAndPunctuation)
             .padding()
         
         if let errorMessage = viewModel.customCoordinatesErrorMessage {
