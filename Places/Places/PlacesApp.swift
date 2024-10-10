@@ -24,9 +24,3 @@ struct PlacesApp: App {
         }
     }
 }
-
-struct NullCoordinatesValidator: CoordinatesValidator {
-    func isValid(latitude: Double, longitude: Double) -> Bool {
-        true
-    }
-}
