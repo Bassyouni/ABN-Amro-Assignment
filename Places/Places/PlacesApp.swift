@@ -23,23 +23,3 @@ struct PlacesApp: App {
         }
     }
 }
-
-// Placeholder and to test if the logic UI changes is made on the main thread
-private class BackgroundQueuePlacesLoader: PlacesLoader {
-    
-    func loadPlaces() async throws -> [Place] {
-        try await Task.sleep(nanoseconds: 2_000_000_000)
-        
-        return await withCheckedContinuation { continuation in
-            DispatchQueue.global(qos: .background).async {
-        
-                let places: [Place] = [
-                    Place(name: "Paris", latitude: 48.8566, longitude: 2.3522),
-                    Place(name: "London", latitude: 51.5074, longitude: -0.1278)
-                ]
-                
-                continuation.resume(returning: places)
-            }
-        }
-    }
-}
