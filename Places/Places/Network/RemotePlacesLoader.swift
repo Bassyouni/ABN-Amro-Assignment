@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class RemotePlacesLoader {
+public final class RemotePlacesLoader: PlacesLoader {
     
     private let url: URL
     private let httpClient: HTTPClient
