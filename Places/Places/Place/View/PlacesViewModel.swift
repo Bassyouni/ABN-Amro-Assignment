@@ -12,6 +12,7 @@ public protocol PlacesDisplayLogic {
     func displayLoading(isLoading: Bool)
     func displayPlaces(_ places: [PlaceUIData])
     func displayError(message: String?)
+    func displayCustomCoordinatesProcessSuccess()
     func displayCustomCoordinatesError(message: String)
 }
 
@@ -49,6 +50,10 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     
     public func displayError(message: String?) {
         self.errorMessage = message
+    }
+    
+    public func displayCustomCoordinatesProcessSuccess() {
+        
     }
     
     public func displayCustomCoordinatesError(message: String) {

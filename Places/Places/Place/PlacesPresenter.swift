@@ -11,6 +11,7 @@ public protocol PlacesPresentationLogic {
     func didStartLoadingPlaces()
     func didFinishLoadingPlaces(with places: [Place])
     func didFinishLoadingPlaces(with error: Error)
+    func didFinishProcessingCustomCoordinates()
     func didFinishProcessingCustomCoordinates(with error: Error)
 }
 
@@ -45,6 +46,10 @@ public class PlacesPresenter: PlacesPresentationLogic {
     
     public func didFinishProcessingCustomCoordinates(with error: any Error) {
         view.displayCustomCoordinatesError(message: "Invalid coordinates")
+    }
+    
+    public func didFinishProcessingCustomCoordinates() {
+        view.displayCustomCoordinatesProcessSuccess()
     }
     
     private func showEmptyPlacesState() {

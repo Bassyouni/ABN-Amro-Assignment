@@ -24,6 +24,7 @@ final class MainQueueDispatchDecorator<T> {
 }
 
 extension MainQueueDispatchDecorator: PlacesDisplayLogic where T == PlacesDisplayLogic {
+
     func displayLoading(isLoading: Bool) {
         dispatch { [weak self] in
             self?.decoratee.displayLoading(isLoading: isLoading)
@@ -39,6 +40,12 @@ extension MainQueueDispatchDecorator: PlacesDisplayLogic where T == PlacesDispla
     func displayError(message: String?) {
         dispatch { [weak self] in
             self?.decoratee.displayError(message: message)
+        }
+    }
+    
+    func displayCustomCoordinatesProcessSuccess() {
+        dispatch { [weak self] in
+            self?.decoratee.displayCustomCoordinatesProcessSuccess()
         }
     }
     

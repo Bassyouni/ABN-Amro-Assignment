@@ -109,12 +109,14 @@ private class PlacesLoaderSpy: PlacesLoader {
 }
 
 private class PlacesPresenterSpy: PlacesPresentationLogic {
+   
     private(set) var messages = [Message]()
     
     enum Message: Equatable {
         case loading
         case finished([Place])
         case placesError(Error)
+        case customCoordinatesSuccess
         case customCoordinatesError(Error)
         
         static func == (lhs: PlacesPresenterSpy.Message, rhs: PlacesPresenterSpy.Message) -> Bool {
@@ -146,6 +148,10 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
     
     func didFinishLoadingPlaces(with error: Error) {
         messages.append(.placesError(error))
+    }
+    
+    func didFinishProcessingCustomCoordinates() {
+        messages.append(.customCoordinatesSuccess)
     }
     
     func didFinishProcessingCustomCoordinates(with error: any Error) {
