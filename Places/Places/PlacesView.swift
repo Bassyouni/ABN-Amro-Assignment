@@ -47,8 +47,11 @@ struct PlacesView: View {
         Picker("", selection: $selectedSegment) {
             Text("List")
                 .tag(Segments.list)
+                .accessibilityLabel("Places List view")
+            
             Text("Custom")
                 .tag(Segments.custom)
+                .accessibilityLabel("Custom coordinates view")
         }
         .pickerStyle(.segmented)
         .padding()
@@ -85,6 +88,7 @@ struct PlacesView: View {
                     Text(place.name)
                         .font(.headline)
                         .foregroundColor(customGreenColor)
+                        
                     Spacer()
                 }
                 HStack {
@@ -96,6 +100,7 @@ struct PlacesView: View {
                 }
             }
         }
+        .accessibilityLabel(place.name)
     }
     
     @ViewBuilder
@@ -133,7 +138,6 @@ struct PlacesView: View {
         .padding()
     }
 }
-
 
 #Preview("Loading State") {
     let viewModel = PlacesViewModel()
