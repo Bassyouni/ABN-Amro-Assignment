@@ -11,9 +11,10 @@ import SwiftUI
 struct PlacesApp: App {
     var body: some Scene {
         WindowGroup {
+            let router = PlacesRouter(urlOpner: UIApplication.shared, urlEncoder: URLEncoder())
             let viewModel = PlacesViewModel()
             let presenter = PlacesPresenter(view: MainQueueDispatchDecorator(decoratee: viewModel))
-            let interactor = PlacesInteractor(loader: BackgroundQueuePlacesLoader(), presenter: presenter, router: NullRouter())
+            let interactor = PlacesInteractor(loader: BackgroundQueuePlacesLoader(), presenter: presenter, router: router)
             PlacesView(interactor: interactor, viewModel: viewModel)
         }
     }
@@ -37,8 +38,4 @@ private class BackgroundQueuePlacesLoader: PlacesLoader {
             }
         }
     }
-}
-
-private struct NullRouter: PlacesTranstions {
-    func navigateTo(place: Place) {}
 }
