@@ -47,6 +47,18 @@ final class RemotePlacesLoaderTests: XCTestCase {
             XCTAssertEqual(error as? RemotePlacesLoader.Error, RemotePlacesLoader.Error.networkError)
         }
     }
+    
+    func test_loadPlaces_deliversErrorOnResponseWithInvalidJson() async {
+        let sut = makeSUT()
+        env.client.stubbedGetResult = .success(Data("".utf8))
+        
+        do  {
+            _ = try await sut.loadPlaces()
+            XCTFail("Expected load places to throw on error")
+        } catch {
+            XCTAssertEqual(error as? RemotePlacesLoader.Error, RemotePlacesLoader.Error.invalidData)
+        }
+    }
         
 }
 

@@ -14,6 +14,7 @@ public final class RemotePlacesLoader {
     
     public enum Error: Swift.Error {
         case networkError
+        case invalidData
     }
     
     public init(url: URL, httpClient: HTTPClient) {
@@ -24,7 +25,9 @@ public final class RemotePlacesLoader {
     public func loadPlaces() async throws -> [Place] {
         do {
             _ = try await httpClient.get(url: url)
-            return []
+            throw Error.invalidData
+        } catch Error.invalidData {
+            throw Error.invalidData
         } catch {
             throw Error.networkError
         }
