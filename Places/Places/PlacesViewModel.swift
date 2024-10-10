@@ -21,8 +21,20 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     @Published public private(set) var places = [PlaceUIData]()
     @Published public private(set) var errorMessage: String?
     @Published public private(set) var customCoordinatesErrorMessage: String?
+    @Published public var customLatitude: String = ""
+    @Published public var customLongitude: String = ""
+    private var cancellables = Set<AnyCancellable>()
     
-    public init() {}
+    public init() {
+        
+        Combine.Publishers
+            .Merge($customLatitude, $customLongitude)
+            .dropFirst(2)
+            .sink { [weak self] _ in
+                self?.customCoordinatesErrorMessage = nil
+            }
+            .store(in: &cancellables)
+    }
     
     public func displayLoading(isLoading: Bool) {
         self.isLoading = isLoading
