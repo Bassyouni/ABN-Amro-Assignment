@@ -65,8 +65,21 @@ struct PlacesView: View {
                 
                 if let errorMessage = viewModel.errorMessage {
                     Text(errorMessage)
-                        .multilineTextAlignment(.leading)
+                        .multilineTextAlignment(.center)
                         .foregroundColor(.red)
+                    
+                    Button {
+                        Task { await interactor.loadPlaces() }
+                    } label: {
+                        Text("Try again")
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(primaryColor)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+
                 }
                 
                 ForEach(viewModel.places) { place in
