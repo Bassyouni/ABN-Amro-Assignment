@@ -62,7 +62,6 @@ final class RemotePlacesLoaderTests: XCTestCase {
      
     func test_loadPlaces_deliversColorsOnHttpResponseWithValidJsonObject() async throws {
         let sut = makeSUT()
-        
         let place1 = makePlace(latitude: 1, longitude: 2.3)
         let place2 = makePlace(name: "London", latitude: 51.507351, longitude: -0.127758)
         let jsonData = makeJson([place1.json, place2.json])
@@ -70,13 +69,8 @@ final class RemotePlacesLoaderTests: XCTestCase {
         
         let receivedPlaces = try await sut.loadPlaces()
         
-        XCTAssertEqual(receivedPlaces.count, 2)
-        XCTAssertEqual(receivedPlaces.first?.name, place1.model.name)
-        XCTAssertEqual(receivedPlaces.first?.latitude, place1.model.latitude)
-        XCTAssertEqual(receivedPlaces.first?.longitude, place1.model.longitude)
-        XCTAssertEqual(receivedPlaces.last?.name, place2.model.name)
-        XCTAssertEqual(receivedPlaces.last?.latitude, place2.model.latitude)
-        XCTAssertEqual(receivedPlaces.last?.longitude, place2.model.longitude)
+        let expectedPlaces = [place1.model, place2.model]
+        XCTAssertEqual(receivedPlaces, expectedPlaces)
     }
 }
 
