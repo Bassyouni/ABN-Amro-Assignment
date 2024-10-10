@@ -27,6 +27,12 @@ public class PlacesPresenter: PlacesPresentationLogic {
     }
     
     public func didFinishLoadingPlaces(with places: [Place]) {
+        guard !places.isEmpty else {
+            view.displayError(message: "No places found\nPlease try again later")
+            view.displayLoading(isLoading: false)
+            return
+        }
+        
         view.displayPlaces(places.map { PlaceUIData(
             id: $0.id,
             name: $0.name?.capitalized ?? "Unknown Location",
