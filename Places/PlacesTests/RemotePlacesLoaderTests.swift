@@ -25,6 +25,16 @@ final class RemotePlacesLoaderTests: XCTestCase {
         
         XCTAssertEqual(env.client.requestedURLs, [url])
     }
+    
+    func test_loadPlacesTwice_requestsDataFromURLTwice() async throws {
+        let url = URL(string: "www.a-url.com")
+        let sut = makeSUT(url: url!)
+        
+        _ = try await sut.loadPlaces()
+        _ = try await sut.loadPlaces()
+        
+        XCTAssertEqual(env.client.requestedURLs, [url, url])
+    }
 }
 
 extension RemotePlacesLoaderTests {
