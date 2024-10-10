@@ -26,7 +26,10 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     private var cancellables = Set<AnyCancellable>()
     
     public init() {
-        
+        bindCoordinatesChangesToRemoveItsError()
+    }
+    
+    private func bindCoordinatesChangesToRemoveItsError() {
         Combine.Publishers
             .Merge($customLatitude, $customLongitude)
             .dropFirst(2)
