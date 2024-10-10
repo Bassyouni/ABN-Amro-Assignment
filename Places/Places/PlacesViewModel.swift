@@ -31,7 +31,7 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     
     private func bindCoordinatesChangesToRemoveItsError() {
         Combine.Publishers
-            .Merge($customLatitude, $customLongitude)
+            .Merge($customLatitude.removeDuplicates(), $customLongitude.removeDuplicates())
             .dropFirst(2)
             .sink { [weak self] _ in
                 self?.customCoordinatesErrorMessage = nil
