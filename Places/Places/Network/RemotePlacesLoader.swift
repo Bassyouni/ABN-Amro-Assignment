@@ -23,33 +23,10 @@ public final class RemotePlacesLoader {
     }
     
     public func loadPlaces() async throws -> [Place] {
-        do {
-            let data = try await httpClient.get(url: url)
-            return try map(data: data).get()
-        } catch Error.invalidData {
-            throw Error.invalidData
-        } catch {
+        guard let data = try? await httpClient.get(url: url) else {
             throw Error.networkError
         }
-    }
-    
-    private func map(data: Data) -> Result<[Place], Error> {
-        let root = try? JSONDecoder().decode(Root.self, from: data)
         
-        guard let root = root else { return .failure(Error.invalidData) }
-        
-        let places = root.locations.map { Place(name: $0.name, latitude: $0.lat, longitude: $0.long) }
-        return .success(places)
+        return try PlacesMapper().map(data: data).get()
     }
 }
-
-private struct Root: Decodable {
-    let locations: [PlaceDTO]
-}
-
-private struct PlaceDTO: Decodable {
-    let name: String?
-    let lat: Double
-    let long: Double
-}
-
