@@ -11,11 +11,9 @@ struct PlacesView: View {
     
     let interactor: PlacesBusinessLogic
     
+    @Environment(\.colorScheme) var colorScheme
     @ObservedObject var viewModel: PlacesViewModel
     @State private var selectedSegment: Segments = .list
-    
-    private let customGreyColor = Color(red: 0, green: 58/255, blue: 83/255)
-    private let customGreenColor = Color(red: 4/255, green: 106/255, blue: 56/255)
     
     enum Segments {
         case list
@@ -87,7 +85,7 @@ struct PlacesView: View {
                 HStack {
                     Text(place.name)
                         .font(.headline)
-                        .foregroundColor(customGreenColor)
+                        .foregroundColor(primaryColor)
                         
                     Spacer()
                 }
@@ -95,7 +93,7 @@ struct PlacesView: View {
                     Text(place.location)
                         .font(.subheadline)
                         .monospacedDigit()
-                        .foregroundStyle(customGreyColor)
+                        .foregroundStyle(secondaryColor)
                     Spacer()
                 }
             }
@@ -131,11 +129,29 @@ struct PlacesView: View {
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(customGreenColor)
+                .background(primaryColor)
                 .foregroundColor(.white)
                 .cornerRadius(8)
         }
         .padding()
+    }
+    
+    private var primaryColor: Color {
+        switch colorScheme {
+        case .light:
+            Color(red: 11/255, green: 119/255, blue: 115/255)
+        default:
+            Color(red: 22/255, green: 146/255, blue: 139/255)
+        }
+    }
+    
+    private var secondaryColor: Color {
+        switch colorScheme {
+        case .light:
+            Color(red: 0, green: 58/255, blue: 83/255)
+        default:
+            Color.white
+        }
     }
 }
 
