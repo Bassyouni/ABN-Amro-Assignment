@@ -78,6 +78,14 @@ final class PlacesInteractorTests: XCTestCase {
         
         XCTAssertEqual(env.routerSpy.transitions, [.place(place)])
     }
+    
+    func test_didCreateCustomCoordines_whenCoordinatesAreValid_notifyPresenter() {
+        let sut = makeSUT()
+        
+        sut.didCreateCustomCoordines(latitude: "\(22.0)", longitude: "\(12.0)")
+        
+        XCTAssertEqual(env.presenterSpy.messages, [.customCoordinatesSuccess])
+    }
 }
 
 extension PlacesInteractorTests {
@@ -128,7 +136,10 @@ private class PlacesPresenterSpy: PlacesPresentationLogic {
                 
             case let (.placesError(errorLHS as PlacesInteractor.Error), .placesError(errorRHS as PlacesInteractor.Error)):
                 return errorLHS == errorRHS
-                
+    
+            case (.customCoordinatesSuccess, .customCoordinatesSuccess):
+                return true
+    
             case let (.customCoordinatesError(errorLHS as PlacesInteractor.Error), .customCoordinatesError(errorRHS as PlacesInteractor.Error)):
                 return errorLHS == errorRHS
                 
