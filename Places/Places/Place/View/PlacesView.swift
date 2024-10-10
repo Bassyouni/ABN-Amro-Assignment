@@ -157,13 +157,13 @@ struct PlacesView: View {
 
 #Preview("Loading State") {
     let viewModel = PlacesViewModel()
-    let PreviewsPresenter = PreviewsPresenter(viewModel, isLoading: true)
+    let _ = PreviewsPresenter(viewModel, isLoading: true)
     PlacesView(interactor: NullInteractor(), viewModel: viewModel)
 }
 
 #Preview("Loaded Places") {
     let viewModel = PlacesViewModel()
-    let PreviewsPresenter = PreviewsPresenter(viewModel, places: [
+    let _ = PreviewsPresenter(viewModel, places: [
         PlaceUIData(id: UUID(), name: "New York", location: "(40.730610, 4-73.935242)"),
         PlaceUIData(id: UUID(), name: "Amsterdam", location: "(52.377956,  4.897070)")
     ])
@@ -172,7 +172,7 @@ struct PlacesView: View {
 
 #Preview("Error") {
     let viewModel = PlacesViewModel()
-    let PreviewsPresenter = PreviewsPresenter(viewModel, errorMessage: "Something bad happened, please try again.")
+    let _ = PreviewsPresenter(viewModel, errorMessage: "Something bad happened, please try again.")
     PlacesView(interactor: NullInteractor(), viewModel: viewModel)
 }
 
