@@ -20,6 +20,7 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     @Published public private(set) var isLoading = false
     @Published public private(set) var places = [PlaceUIData]()
     @Published public private(set) var errorMessage: String?
+    @Published public private(set) var customCoordinatesErrorMessage: String?
     
     public init() {}
     
@@ -36,6 +37,6 @@ public class PlacesViewModel: ObservableObject, PlacesDisplayLogic {
     }
     
     public func displayCustomCoordinatesError(message: String) {
-        
+        customCoordinatesErrorMessage = message
     }
 }

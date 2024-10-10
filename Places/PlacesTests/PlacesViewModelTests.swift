@@ -56,6 +56,15 @@ final class PlacesViewModelTests: XCTestCase {
         sut.displayError(message: nil)
         XCTAssertEqual(sut.errorMessage, nil)
     }
+    
+    func test_displayCustomCoordinatesError_setCustomCoordinatesErrorMessageWithMessage() {
+        let sut = makeSUT()
+        let message = "any error"
+        
+        sut.displayCustomCoordinatesError(message: message)
+        
+        XCTAssertEqual(sut.customCoordinatesErrorMessage, message)
+    }
 }
 
 extension PlacesViewModelTests {
